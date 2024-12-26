@@ -48,3 +48,17 @@ p[b-exjp26jb2f]
     justify-content: center;
     gap: 1em;
 }
+
+.CreateButton[b-exjp26jb2f]
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-success[b-exjp26jb2f]
+{
+    justify-self: center;
+    font-size: 1.5rem;
+    margin: 1em;
+}

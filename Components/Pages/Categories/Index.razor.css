@@ -48,3 +48,17 @@ p
     justify-content: center;
     gap: 1em;
 }
+
+.CreateButton
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-success
+{
+    justify-self: center;
+    font-size: 1.5rem;
+    margin: 1em;
+}

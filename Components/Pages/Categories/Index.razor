@@ -5,27 +5,40 @@
 @inject NavigationManager navManager
 @rendermode InteractiveServer
 
-<h1 class="titulo">Categorias</h1>
 @inject ApplicationDbContext context
 
-@if (ShowNotification)
+@if (!ListModel.Any())
 {
-    <div class="alert alert-success" role="alert">
-        A categoria foi excluída com sucesso!
-    </div>
+    <p class="text-center">
+        Carregando as categorias...
+    </p>
 }
-
-@foreach (var category in ListModel)
+else
 {
-    <div class="espaco ">
-        <div class="coluna">
-            <p>@category.Title</p>
+    @if (ShowNotification)
+    {
+        <div class="alert alert-success" role="alert">
+            A categoria foi excluída com sucesso!
         </div>
-        <div class="coluna">
-            <button type="button" class="btn btn-primary w-25" @onclick="() => UpdateCategory(category.Id)">Editar</button>
-            <button type="button" class="btn btn-danger w-25" @onclick="() => DeleteCategory(category.Id)">Excluir</button>
-        </div>
+    }
+
+
+    <div class="CreateButton">
+        <button type="button" class="btn btn-success btn-lg" @onclick="() => CreateCategory()">Criar nova categoria</button>
     </div>
+
+    @foreach (var category in ListModel)
+    {
+        <div class="espaco ">
+            <div class="coluna">
+                <p>@category.Title</p>
+            </div>
+            <div class="coluna">
+                <button type="button" class="btn btn-primary btn-lg w-25" @onclick="() => UpdateCategory(category.Id)">Editar</button>
+                <button type="button" class="btn btn-secondary btn-lg w-25" @onclick="() => DeleteCategory(category.Id)">Excluir</button>
+            </div>
+        </div>
+    }
 }
 
 @code {
@@ -73,6 +86,18 @@
         try
         {
             navManager.NavigateTo($"/categories/update/{id}");
+        }
+        catch (NavigationException e)
+        {
+            Console.WriteLine("Ocorreu um erro na navegacao");
+        }
+    }
+    
+    public async Task CreateCategory()
+    {
+        try
+        {
+            navManager.NavigateTo($"/categories/create");
         }
         catch (NavigationException e)
         {
