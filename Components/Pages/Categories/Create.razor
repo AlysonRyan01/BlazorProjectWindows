@@ -1,0 +1,49 @@
+﻿@page "/categories/create"
+@using BlazorProjectWindows.Data
+@using BlazorProjectWindows.Models
+@rendermode InteractiveServer
+@inject ApplicationDbContext context
+@inject NavigationManager navManager
+
+<h1 class="mb-5">Nova categoria</h1>
+
+<EditForm Model="@Model" OnValidSubmit="@OnSubmitAsync">
+    <DataAnnotationsValidator/>
+
+    <div class="mb-3">
+        <label class="form-label">Nome da categoria</label>
+        <InputText @bind-Value="Model.Title" class="form-control"/>
+        <ValidationMessage For="() => Model.Title" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Criar</button>
+    <a href="/">Cancelar</a>
+</EditForm>
+
+@code
+{
+    public Category Model { get; set; } = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        return Task.Delay(1000);
+    }
+
+    public async Task OnSubmitAsync()
+    {
+        try
+        {
+            await context.Categories.AddAsync(Model);
+            await context.SaveChangesAsync();
+            navManager.NavigateTo("categories");
+        }
+        catch (NavigationException e)
+        {
+            Console.WriteLine("Erro na navegacao");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Ocorreu uma excecao na aplicacao");
+        }
+    }
+}

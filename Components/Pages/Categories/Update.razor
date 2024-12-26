@@ -1,0 +1,65 @@
+﻿@page "/categories/update/{id:int}"
+@using BlazorProjectWindows.Data
+@using BlazorProjectWindows.Models
+@using Microsoft.EntityFrameworkCore
+@rendermode InteractiveServer
+@inject ApplicationDbContext context
+@inject NavigationManager navManager
+
+<h3>Delete</h3>
+
+<EditForm Model="@Model" OnValidSubmit="@OnSubmitAsync">
+    <DataAnnotationsValidator/>
+
+    <div class="mb-3">
+        <label class="form-label">Novo nome da categoria</label>
+        <InputText @bind-Value="Model.Title" class="form-control"/>
+        <ValidationMessage For="() => Model.Title" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a href="/">Cancelar</a>
+</EditForm>
+
+@if (ShowNotification)
+{
+    <div class="alert alert-success" role="alert">
+        A categoria foi atualizada com sucesso!
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    public Category Model { get; set; } = new();
+    public bool ShowNotification { get; set; } = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await context.Categories.FirstOrDefaultAsync(x => x.Id == Id);
+    }
+
+    public async Task OnSubmitAsync()
+    {
+        try
+        {
+            context.Entry(Model).State = EntityState.Detached;
+            
+            context.Categories.Update(Model);
+            await context.SaveChangesAsync();
+
+            ShowNotification = true;
+            
+            StateHasChanged();
+            await Task.Delay(3000);
+            ShowNotification = false;
+            StateHasChanged();
+            
+            navManager.NavigateTo("/categories");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

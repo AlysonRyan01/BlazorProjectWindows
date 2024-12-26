@@ -1,0 +1,50 @@
+.select[b-exjp26jb2f]
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    height: auto;
+}
+
+.espaco[b-exjp26jb2f] {
+    justify-self: center;
+    font-size: 1.5rem;
+    margin: 1em;
+    border-radius: 20px;
+    padding: 1em;
+    width: 80%;
+    height: fit-content;
+    background-color: transparent;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.titulo[b-exjp26jb2f]
+{
+    justify-self: center;
+    margin-bottom: 1rem;
+    font-family: "Rubik Mono One", serif;
+    font-weight: 100;
+    background-color: #c5d7f2;
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+
+p[b-exjp26jb2f]
+{
+    color: darkblue;
+    text-decoration: underline green;
+    text-transform: uppercase;
+    font-family: "Rubik Mono One", serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.espaco > .coluna[b-exjp26jb2f] {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}

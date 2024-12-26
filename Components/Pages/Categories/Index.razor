@@ -1,0 +1,82 @@
+﻿@page "/categories"
+@using BlazorProjectWindows.Data
+@using BlazorProjectWindows.Models
+@using Microsoft.EntityFrameworkCore
+@inject NavigationManager navManager
+@rendermode InteractiveServer
+
+<h1 class="titulo">Categorias</h1>
+@inject ApplicationDbContext context
+
+@if (ShowNotification)
+{
+    <div class="alert alert-success" role="alert">
+        A categoria foi excluída com sucesso!
+    </div>
+}
+
+@foreach (var category in ListModel)
+{
+    <div class="espaco ">
+        <div class="coluna">
+            <p>@category.Title</p>
+        </div>
+        <div class="coluna">
+            <button type="button" class="btn btn-primary w-25" @onclick="() => UpdateCategory(category.Id)">Editar</button>
+            <button type="button" class="btn btn-danger w-25" @onclick="() => DeleteCategory(category.Id)">Excluir</button>
+        </div>
+    </div>
+}
+
+@code {
+    public List<Category> ListModel { get; set; } = new();
+    public bool ShowNotification { get; set; } = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ListModel = await context.Categories.AsNoTracking().ToListAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Ocorreu um erro na aplicacao");
+        }
+    }
+
+    public async Task DeleteCategory(int id)
+    {
+        var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
+        try
+        {
+            context.Categories.Remove(category);
+            await context.SaveChangesAsync();
+
+            ListModel = await context.Categories.ToListAsync();
+            ShowNotification = true;
+            
+            StateHasChanged();
+            await Task.Delay(3000);
+            ShowNotification = false;
+            StateHasChanged();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public async Task UpdateCategory(int id)
+    {
+        try
+        {
+            navManager.NavigateTo($"/categories/update/{id}");
+        }
+        catch (NavigationException e)
+        {
+            Console.WriteLine("Ocorreu um erro na navegacao");
+        }
+    }
+}
